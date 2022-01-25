@@ -5,14 +5,12 @@ import { Header } from './partials/Header';
 export const DefaultLayout = ({children}) => {
     return (
         <div className='default-layout'>
-
-            <header className='header'>
+            <header className="header">
                 <Header />
             </header>
             <main className='main'>{children}</main>
-            <footer className='footer'>
+            <footer className='footer bg-info'>
                 <Footer />
             </footer>
-
         </div>);
 };

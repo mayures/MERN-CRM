@@ -8,7 +8,7 @@ export const LoginForm = ({
     formSwitch,
     email,
     password
-}) => {
+}) => { 
     return (
         <div className='loginform'>
             <Container>
