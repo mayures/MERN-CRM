@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-export const AddTicketForm = ({ handleOnSubmit, handleOnChange, frmdata }) => {
+export const AddTicketForm = ({ handleOnSubmit, handleOnChange, frmdata, frmdter }) => {
     return (
         <div className='jumbotron-addticket'>
             <h1 className='text-center text-info'>Add New Ticket</h1>
-            <hr/>
+            <hr />
             <Form onSubmit={handleOnSubmit} className='mt-3'>
                 <Form.Group className='mb-3' as={Row}>
                     <Form.Label column sm={3}>Subject</Form.Label>
@@ -15,10 +16,11 @@ export const AddTicketForm = ({ handleOnSubmit, handleOnChange, frmdata }) => {
                             name="subject"
                             value={frmdata.subject}
                             // minLength={3}
-                            // maxLength={50}
+                            //maxLength={50}
                             onChange={handleOnChange}
                             placeholder='Subject'
                         />
+                        <Form.Text className="text-danger">{frmdter.subject && "Subject is required"}</Form.Text>
                     </Col>
                 </Form.Group>
                 <Form.Group className='mb-3' as={Row}>
@@ -50,3 +52,10 @@ export const AddTicketForm = ({ handleOnSubmit, handleOnChange, frmdata }) => {
         </div >
     );
 };
+
+AddTicketForm.propTypes = {
+    handleOnChange: PropTypes.func.isRequired,
+    handleOnSubmit: PropTypes.func.isRequired,
+    frmdata: PropTypes.object.isRequired,
+    frmdter: PropTypes.object.isRequired
+}

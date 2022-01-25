@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { AddTicketForm } from '../../components/AddTicket/AddTicket.comp';
 import { Breadcrumbcomp } from '../../components/Breadcrumb/Breadcrumb.comp';
-import PropTypes from 'prop-types';
+import { shortCheck } from '../../utils/Validation';
 
 const infrmdt = {
   subject: '',
   issueDate: '',
-  issue: ''
+  issue: '',
 }
 
 const infrmdter = {
-  subject:false,
-  issueDate:false,
-  issue:false
+  subject: false,
+  issueDate: false,
+  issue: false,
 }
 
 export const AddTicket = () => {
@@ -21,7 +21,7 @@ export const AddTicket = () => {
   const [frmdata, setFrmdata] = useState(infrmdt);
   const [frmdter, setFrmdter] = useState(infrmdter);
 
-  useEffect(() => {}, [frmdata]);  
+  useEffect(() => { }, [frmdata, frmdter]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -30,19 +30,22 @@ export const AddTicket = () => {
       ...frmdata,
       [name]: value
     })
-
-    setFrmdter({
-      ...infrmdter,
-      [name]: value
-    })
-
+    
     console.log(name, value)
   }
 
-  const handleOnSubmit = async(e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    const isSubject = await
+    setFrmdter(infrmdter)
+
+    const isSubject = await shortCheck(frmdata.subject);
+
+    !isSubject &&
+      setFrmdter({
+        ...infrmdter,
+        subject: !isSubject
+      })
 
     console.log("form submitted", frmdata)
 
@@ -59,6 +62,7 @@ export const AddTicket = () => {
             handleOnChange={handleOnChange}
             handleOnSubmit={handleOnSubmit}
             frmdata={frmdata}
+            frmdter={frmdter}
           />
         </Col>
       </Row>
@@ -66,8 +70,4 @@ export const AddTicket = () => {
   );
 };
 
-AddTicket.propTypes = {
-  handleOnChange: PropTypes.func.isRequired,
-  handleOnSubmit: PropTypes.func.isRequired,
-  frmdata: PropTypes.object.isRequired
-}
+
