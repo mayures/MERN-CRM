@@ -9,7 +9,7 @@ export const TicketTable = ({ tickets }) => {
                 <th>Subject</th>
                 <th>Status</th>
                 <th>Opened Date</th>
-            </thead>
+            </thead> 
             <tbody>
                 {tickets.length ? (tickets.map(row => (
                     <tr>

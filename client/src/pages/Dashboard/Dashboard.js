@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { TicketTable } from '../../components/TicketTable/TicketTable.comp';
 import tickets from '../../assets/data/dummy-data.json'

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; 
 
 export const AddTicketForm = ({ handleOnSubmit, handleOnChange, frmdata, frmdter }) => {
     return (
@@ -15,7 +15,7 @@ export const AddTicketForm = ({ handleOnSubmit, handleOnChange, frmdata, frmdter
                             type="text"
                             name="subject"
                             value={frmdata.subject}
-                            // minLength={3}
+                            //minLength={3}
                             //maxLength={50}
                             onChange={handleOnChange}
                             placeholder='Subject'
@@ -46,7 +46,7 @@ export const AddTicketForm = ({ handleOnSubmit, handleOnChange, frmdata, frmdter
                             placeholder='Type your issue here'
                         />
                     </Col>
-                </Form.Group>
+                </Form.Group> 
                 <Button type="submit" variant="info" className='text-white col-12'>Submit</Button>
             </Form>
         </div >
