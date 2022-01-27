@@ -8,23 +8,28 @@ import tickets from '../../assets/data/dummy-data.json'
 export const TicketListing = () => {
 
     const [str, setStr] = useState('');
-    const [display, setDisplay] = useState(tickets);
+    const [display, setDisplay] = useState([tickets]);
 
-    useEffect(() =>{}, [str, display]);
+    useEffect(() => { }, [str, display]);
 
     const handleOnChange = (e) => {
-        const {value}=e.target;
+        const { value } = e.target;
+        //console.log(value)
         setStr(value);
         searchTicket(value);
     }
 
-    const searchTicket = (str) => {
+    const searchTicket = (sttr) => {
 
-        const displayTickets = tickets.filter(row => {
-            row.status.toLowerCase().includes(str.toLowerCase())
+        console.log(sttr)
+
+        const displayTickets = tickets.filter((row) => {
+            return row.status.includes(sttr)
         })
-        
+
+        console.log(displayTickets)
         setDisplay(displayTickets)
+
     }
 
     return (
@@ -47,7 +52,7 @@ export const TicketListing = () => {
             </Row>
             <hr />
             <Row>
-                <Col><TicketTable tickets={tickets} /></Col>
+                <Col><TicketTable tickets={display} /></Col>
             </Row>
         </Container>
     );

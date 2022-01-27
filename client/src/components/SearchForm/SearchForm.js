@@ -20,7 +20,7 @@ export const SearchForm = ({handleOnChange, str}) => {
                 </Form.Group>
             </Form>
         </div>
-    );
+    ); 
 
 };
 
