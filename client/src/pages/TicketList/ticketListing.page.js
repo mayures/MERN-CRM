@@ -8,13 +8,12 @@ import tickets from '../../assets/data/dummy-data.json'
 export const TicketListing = () => {
 
     const [str, setStr] = useState('');
-    const [display, setDisplay] = useState([tickets]);
+    const [display, setDisplay] = useState(tickets);
 
-    useEffect(() => { }, [str, display]);
+    useEffect(() => {}, [str, display]);
 
     const handleOnChange = (e) => {
         const { value } = e.target;
-        //console.log(value)
         setStr(value);
         searchTicket(value);
     }
@@ -24,7 +23,7 @@ export const TicketListing = () => {
         console.log(sttr)
 
         const displayTickets = tickets.filter((row) => {
-            return row.status.includes(sttr)
+            return row.status.toLowerCase().includes(sttr.toLowerCase())
         })
 
         console.log(displayTickets)
