@@ -12,5 +12,5 @@ export const DefaultLayout = ({children}) => {
             <footer className='footer bg-info'>
                 <Footer />
             </footer>
-        </div>);
+        </div>); 
 };

@@ -38,7 +38,7 @@ export const TicketListing = () => {
                     <Breadcrumbcomp page="Ticket List" />
                 </Col>
             </Row>
-            <Row className="mt-4">
+            <Row>
                 <Col>
                     <Button variant="info" className='text-white'>Add Ticket</Button>
                 </Col>
