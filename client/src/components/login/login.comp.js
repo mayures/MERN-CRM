@@ -37,7 +37,7 @@ export const LoginForm = ({
                                     placeholder='***********'
                                 />
                             </Form.Group>
-                            <Button type="submit">Login</Button>
+                            <Button type="submit" variant='info' className='mt-2 col-12 text-white'>Login</Button>
                         </Form>
                         <hr />
                     </Col>

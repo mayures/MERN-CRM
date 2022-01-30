@@ -1,12 +1,12 @@
 import React from 'react';
 import Login from "./pages/login/login";
 import './App.css';
-import { DefaultLayout } from './layouts/DefaultLayout';
 import { Dashboard } from './pages/Dashboard/Dashboard'
 import { AddTicket } from './pages/AddTicket/AddTicket.page';
 import { TicketListing } from './pages/TicketList/ticketListing.page';
 import { Ticket } from './pages/Ticket/Ticket.page';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 
 function App() {
     return (
@@ -14,12 +14,15 @@ function App() {
             <Router>
                 <Routes>
                     <Route exact path="/" element={<Login />} />
-                    <Route exact path="/dashboard" element={<DefaultLayout><Dashboard /></DefaultLayout>} />
-                    <Route exact path="/add-ticket" element={<DefaultLayout><AddTicket /></DefaultLayout>} />
-                    <Route exact path="/tickets" element={<DefaultLayout><TicketListing /></DefaultLayout>} />
-                    <Route exact path="/ticket/:tid" element={<DefaultLayout><Ticket /></DefaultLayout>} />
+                    <Route element={<PrivateRoute/>}>
+                        <Route exact path="/dashboard" element={<Dashboard/>}/>
+                        <Route exact path="/add-ticket" element={<AddTicket/>}/>
+                        <Route exact path="/tickets" element={<TicketListing/>}/>
+                        <Route exact path="/ticket/:tid" element={<Ticket/>}/>
+                        <Route exact path="/dashboard" element={<Dashboard/>}/>
+                    </Route>
                 </Routes>
-            </Router>
+            </Router> 
         </div>
     )
 }

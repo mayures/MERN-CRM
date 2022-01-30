@@ -4,11 +4,19 @@ import { Breadcrumbcomp } from '../../components/Breadcrumb/Breadcrumb.comp';
 import tickets from '../../assets/data/dummy-data.json'
 import { Message } from '../../components/message-history/Message.comp';
 import { ReplyTicket } from '../../components/reply-ticket/ReplyTicket';
+import { useParams } from 'react-router-dom';
 
-const ticket = tickets[0];
 export const Ticket = () => {
+    const {tid}=useParams();
     const [message, setMessage] = useState('');
-    useEffect(() => { }, [message]);
+    const [ticket, setTicket] = useState('');
+    useEffect(() => {
+        for(let i=0;i<tickets.length;i++){
+            if(tickets[i].id==tid){
+                setTicket(tickets[i])
+            }
+        }
+    }, [message]);
 
 
     const handleOnChange = (e) => {
@@ -42,10 +50,10 @@ export const Ticket = () => {
                 <Col className='text-end'>
                     <Button variant="outline-info">Close Ticket</Button>
                 </Col>
-            </Row>
+            </Row> 
             <Row className='mt-4'>
                 <Col>
-                    <Message msg={ticket.history} />
+                    {ticket.history && <Message msg={ticket.history} />}
                 </Col>
             </Row>
             <hr />

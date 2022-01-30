@@ -4,13 +4,14 @@ import { Breadcrumbcomp } from '../../components/Breadcrumb/Breadcrumb.comp'
 import { SearchForm } from '../../components/SearchForm/SearchForm';
 import { TicketTable } from '../../components/TicketTable/TicketTable.comp';
 import tickets from '../../assets/data/dummy-data.json'
+import { Link } from 'react-router-dom'
 
 export const TicketListing = () => {
 
     const [str, setStr] = useState('');
     const [display, setDisplay] = useState(tickets);
 
-    useEffect(() => {}, [str, display]);
+    useEffect(() => { }, [str, display]);
 
     const handleOnChange = (e) => {
         const { value } = e.target;
@@ -40,7 +41,7 @@ export const TicketListing = () => {
             </Row>
             <Row>
                 <Col>
-                    <Button variant="info" className='text-white'>Add Ticket</Button>
+                    <Link to="/add-ticket"><Button variant="info" className='text-white'>Add Ticket</Button></Link>
                 </Col>
                 <Col className='text-end'>
                     <SearchForm

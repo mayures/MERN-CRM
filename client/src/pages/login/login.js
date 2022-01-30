@@ -53,7 +53,7 @@ function Login() {
     }
 
     return (
-        <div className='login'>
+        <div className='login bg-info'>
             <div className='jumbotron'>
 
                 {frm === 'login' && <LoginForm
