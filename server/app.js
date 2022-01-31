@@ -9,6 +9,24 @@ dotenv.config()
 
 const app = express()
 
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => { console.log(`app listening on Port: ${PORT}`) })
+
+mongoose.connect(process.env.mongo_url)
+
+if (process.env.NODE_ENV !== 'production') {
+    const db = mongoose.connection
+
+    db.on('open', () => {
+        console.log("connected to mongodb")
+    })
+    db.on('error', (error) => {
+        console.log(error)
+    })
+
+    app.use(morgan("tiny"))
+}
+
 //API Secuirity
 app.use(helmet())
 
@@ -17,12 +35,6 @@ app.use(cors({
     origin: "http://localhost:3001",
     credentials: true
 }))
-
-//logger
-app.use(morgan("tiny"))
-
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => { console.log(`app listening on Port: ${PORT}`) })
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -35,23 +47,11 @@ const handleError = require('./src/utils/errorHandler')
 app.use((req, res, next) => {
     const error = new Error("resource not found");
     error.status = 404;
-    console.log("hi");
     next(error)
 })
 
 app.use((error, req, res, next) => {
-    console.log("hi")
     handleError(error, res)
 })
-
-try {
-    mongoose.connect(process.env.mongo_url, () => {
-        console.log("connected to mongodb")
-    })
-} catch (err) {
-    console.error(err)
-}
-
-
 
 
