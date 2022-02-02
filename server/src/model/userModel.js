@@ -4,32 +4,44 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        maxlength:50
+        maxlength: 50
     },
-    company:{
+    company: {
         type: String,
         required: true,
-        maxlength:50
+        maxlength: 50
     },
-    address:{
+    address: {
         type: String,
-        maxlength:10
+        maxlength: 10
     },
-    phone:{
+    phone: {
         type: Number,
         required: true,
     },
-    email:{
+    email: {
         type: String,
         required: true,
-        maxlength:50
+        maxlength: 50
     },
-    password:{
+    password: {
         type: String,
         required: true,
-        minlength:8,
-        maxlength:100
-    },   
+        minlength: 8,
+        maxlength: 100
+    },
+    refreshJWT: {
+        token: {
+            type: String,
+            maxlength: 500,
+            default: ''
+        },
+        addedAt: {
+            type: Date,
+            requireD: true,
+            default: Date.now()
+        }
+    }
 })
 
 const User = mongoose.model('user', userSchema)
