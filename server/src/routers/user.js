@@ -1,9 +1,12 @@
 const express = require('express');
-const User = require('../model/userModel');
+const User = require('../model/user/userSchema');
 const router = express.Router();
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt");
-const { setJWT, getJWT } = require('../../helpers/redis.helper');
+const { setJWT } = require('../../helpers/redis.helper');
+const userAuthorisation = require('../../middleware/auth.middleware');
+const { getUserByEmail } = require('../model/user/userModel');
+const setPasswordResetPin = require('../model/resetPin.js/ResetPin.model');
 const saltRounds = 10
 
 
@@ -24,12 +27,17 @@ router.post('/', async (req, res) => {
     const user = new User({ name, company, address, phone, email, password: passwordHash });
 
     await user.save().then((user) => {
-        console.log(user);
         res.json({ message: "new user created", user })
     }).catch(err => {
         console.log(err)
         res.json({ status: "fail", message: err.message })
     })
+})
+
+router.get("/", userAuthorisation, async (req, res) => {
+    const userId = req.userId;
+
+    const userProf = await User.findById({ "_id": userId })
 })
 
 router.post("/login", async (req, res) => {
@@ -43,8 +51,6 @@ router.post("/login", async (req, res) => {
     if (!existUser) {
         return res.json({ status: "fail", message: "plaease provide the valid email" })
     }
-
-    console.log(existUser._id + "\n\n")
 
     const passwordCorrect = await bcrypt.compareSync(password, existUser.password)
     if (!passwordCorrect) {
@@ -71,6 +77,19 @@ router.post("/login", async (req, res) => {
 
     console.log(accessToken);
     console.log(refreshToken);
+})
+
+router.post("/reset-password", async (req, res) => {
+    const { email } = req.body;
+
+    const user = await getUserByEmail(email);
+
+    if (user && user._id) {
+        const setPin = await setPasswordResetPin(email)
+        return res.json(setPin)
+    }
+
+    return res.json({ status: "error", message: "if the email exists in our database a reset pin will be sent to you shortly" })
 })
 
 module.exports = router

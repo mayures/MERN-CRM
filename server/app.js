@@ -41,6 +41,7 @@ app.use(express.json())
 
 app.use('/v1/user', require('./src/routers/user'))
 app.use('/v1/ticket', require('./src/routers/ticket'))
+app.use('/v1/tokens', require('./src/routers/token'))
 
 const handleError = require('./src/utils/errorHandler')
 

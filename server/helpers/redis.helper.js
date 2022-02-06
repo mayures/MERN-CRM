@@ -6,20 +6,7 @@ client.connect()
 const setJWT = (key, value) => {
     return client.set(key, value).then((res) => {
         return res;
-    }).catch(err=>{
-        console.error(err)
-    });
-
-    // return new Promise((resolve, reject) => {
-    //     try {
-    //       resolve( client.set(key, value, (err, res) => {
-    //         if (err) return(err);
-    //         return (res);
-    //       }))
-    //     } catch (error) {
-    //       reject(error);
-    //     }
-    //   });
+    }).catch(err => console.error(err));
 }
 
 const getJWT = (key) => {
@@ -28,4 +15,12 @@ const getJWT = (key) => {
     }).catch(err => console.error(err))
 }
 
-module.exports = { setJWT, getJWT }
+const deleteJWT=(key)=>{
+    try {
+        client.delete(key);
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports = { setJWT, getJWT, deleteJWT }
