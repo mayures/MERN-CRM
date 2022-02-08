@@ -6,7 +6,8 @@ const bcrypt = require("bcrypt");
 const { setJWT } = require('../../helpers/redis.helper');
 const userAuthorisation = require('../../middleware/auth.middleware');
 const { getUserByEmail } = require('../model/user/userModel');
-const setPasswordResetPin = require('../model/resetPin.js/ResetPin.model');
+const { setPasswordResetPin, getPinbyEmailPin } = require('../model/resetPin.js/ResetPin.model');
+const { emailProcessor } = require('../../helpers/email.helper');
 const saltRounds = 10
 
 
@@ -86,10 +87,24 @@ router.post("/reset-password", async (req, res) => {
 
     if (user && user._id) {
         const setPin = await setPasswordResetPin(email)
-        return res.json(setPin)
+        const result = await emailProcessor(email, setPin.pin)
+
+        if(result && result.messageId){
+            return res.json({status: "success", message:"pin sent successfully. check your mailbox"})
+        }
     }
 
-    return res.json({ status: "error", message: "if the email exists in our database a reset pin will be sent to you shortly" })
+    return res.json({ status: "error", message: "Unable to proceed with your request. Please try again later" })
+})
+
+router.patch("/reset-password", async (req, res) => {
+    const { email, pin, newPassword } = req.body;
+    const getPin = await getPinbyEmailPin(email, pin)
+    if(getPin._id){
+        res.json(getPin._id)
+    } 
 })
 
 module.exports = router
+
+

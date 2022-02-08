@@ -11,8 +11,14 @@ const setPasswordResetPin = async (email) => {
     }
 
     return new Promise((resolve, reject) => {
-        new ResetPin(resetObj).save().then(data => { resolve(data) }).catch(err => { reject(err) })
+        ResetPin(resetObj).save().then(data => { resolve(data) }).catch(err => { resolve(false); reject(err) })
     })
 }
 
-module.exports = setPasswordResetPin
+const getPinbyEmailPin = (email, pin) => {
+    return new Promise(async (resolve, reject) => {
+        await ResetPin.findOne({ email, pin }).then(data => { resolve(data) }).catch(err => { reject(err) })
+    })
+}
+
+module.exports = { setPasswordResetPin, getPinbyEmailPin }
