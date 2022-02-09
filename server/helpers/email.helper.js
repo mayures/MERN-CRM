@@ -39,6 +39,7 @@ const emailProcessor = ({ type, email, pin }) => {
             }
 
             send(info)
+            break;
 
         case "password-update-success":
             let infoChange = {
@@ -50,6 +51,10 @@ const emailProcessor = ({ type, email, pin }) => {
             }
 
             send(infoChange)
+            break;
+
+        default:
+            break;
     }
 }
 

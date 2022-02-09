@@ -9,6 +9,7 @@ const { getUserByEmail, updatePassword } = require('../model/user/userModel');
 const { setPasswordResetPin, getPinbyEmailPin, deletePin } = require('../model/resetPin.js/ResetPin.model');
 const { emailProcessor } = require('../../helpers/email.helper');
 const hashPassword = require('../../helpers/bcrypt.helper');
+const {resetPassValid, updatePassValid} = require('../../middleware/formValidation.helper');
 const saltRounds = 10
 
 
@@ -81,7 +82,7 @@ router.post("/login", async (req, res) => {
     console.log(refreshToken);
 })
 
-router.post("/reset-password", async (req, res) => {
+router.post("/reset-password", resetPassValid, async (req, res) => {
     const { email } = req.body;
 
     const user = await getUserByEmail(email);
@@ -97,10 +98,9 @@ router.post("/reset-password", async (req, res) => {
     return res.json({ status: "error", message: "If the email exists in our database a reset pin will be sent to you shortly." })
 })
 
-router.patch("/reset-password", async (req, res) => {
+router.patch("/reset-password", updatePassValid,  async (req, res) => {
     const { email, pin, newPassword } = req.body;
     const getPin = await getPinbyEmailPin(email, pin)
-    console.log(getPin)
     if (getPin._id) {
         const dbDate = getPin.addedAt
         const expiresIn = 1
@@ -116,7 +116,7 @@ router.patch("/reset-password", async (req, res) => {
         const updatedpass = await updatePassword(email, hash)
         console.log(updatedpass)
         if (updatedpass && updatedpass._id) {
-            await emailProcessor({ type: "password-update-success", email})
+            await emailProcessor({ type: "password-update-success", email })
             await deletePin(email)
             return res.json({ status: "success", updatedpass })
         }
