@@ -1,6 +1,6 @@
 const express = require('express');
 const userAuthorisation = require('../../middleware/auth.middleware');
-const { insertTicket, findTicketUser } = require('../model/ticket/ticket.model');
+const { insertTicket, findTicketUser, findOneTicket, pushMessage, closeTicket, deleteTicket } = require('../model/ticket/ticket.model');
 const Ticket = require('../model/ticket/ticket.schema');
 const router = express.Router()
 
@@ -36,11 +36,76 @@ router.post('/', userAuthorisation, async (req, res) => {
 
 router.get("/", userAuthorisation, async (req, res) => {
 
-    const userId = req.userId;
+    try {
+        const userId = req.userId;
 
-    const result = await findTicketUser(userId)
+        const result = await findTicketUser(userId)
 
-    res.json(result)
+        if (result)
+            return res.json(result)
+
+        return res.json({ status: "error", message: "user ticket cannot be found" })
+    } catch (error) {
+        return res.json({ status: "error", message: error.message })
+    }
+
 })
+
+router.get("/:tId", userAuthorisation, async (req, res) => {
+    try {
+        const ticketId = req.params.tId;
+        const userId = req.userId
+        const result = await findOneTicket(ticketId, userId)
+
+        if (result) {
+            return res.json(result)
+        }
+    } catch (error) {
+        return res.json({ status: "error", message: error.message })
+    }
+})
+
+router.put("/:tId", userAuthorisation, async (req, res) => {
+    try {
+        const { message, sender } = req.body
+
+        const ticketId = req.params.tId;
+        const userId = req.userId
+        const result = await pushMessage(ticketId, userId, message, sender)
+
+        if (result._id) {
+            return res.json(result)
+        }
+    } catch (error) {
+        return res.json({ status: "error", message: error.message })
+    }
+})
+
+router.patch("/close-ticket/:tId", userAuthorisation, async (req, res) => {
+    try {
+        const tId = req.params.tId
+        const userId = req.userId
+        const result = await closeTicket(tId, userId)
+        if (result._id) {
+            res.json(result)
+        }
+    } catch (error) {
+        return res.json({ status: "error", message: error.message })
+    }
+})
+
+router.delete("/delete-ticket/:tId", userAuthorisation, async (req, res) => {
+    try {
+        const tId = req.params.tId
+        const userId = req.userId
+        await deleteTicket(tId, userId)
+
+        return res.json({ message: "ticket deleted successfully" })
+
+    } catch (error) {
+        return res.json({ message: error.message })
+    }
+})
+
 
 module.exports = router

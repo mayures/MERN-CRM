@@ -22,7 +22,53 @@ const findTicketUser = (_id) => {
     })
 }
 
+const findOneTicket = (_id, clientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await Ticket.findOne({ _id, clientId }).then(data => resolve(data)).catch(err => reject(err))
+        } catch (error) {
+            reject(error.message)
+        }
+    })
+}
+
+const pushMessage = (_id, clientId, message, sender) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await Ticket.findOneAndUpdate({ _id, clientId }, { $push: { conversations: { message, sender } } }, { new: true }).then(data => {
+                resolve(data)
+            }).catch(err => { reject(err) })
+        } catch (error) {
+            reject(error.message)
+        }
+    })
+}
+
+const closeTicket = (_id, clientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await Ticket.findOneAndUpdate({ _id, clientId }, { $set: { status: "ticket closed" } }, { new: true }).then(data => resolve(data)).catch(err => reject(err))
+        } catch (error) {
+            reject(error.message)
+        }
+    })
+}
+
+const deleteTicket = (_id, clientId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await Ticket.findOneAndDelete({ _id, clientId }).then(data => resolve(data)).catch(err => reject(err))
+        } catch (error) {
+            reject(error.message)
+        }
+    })
+}
+
 module.exports = {
     insertTicket,
-    findTicketUser
+    findTicketUser,
+    findOneTicket,
+    pushMessage,
+    closeTicket,
+    deleteTicket
 }
