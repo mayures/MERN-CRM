@@ -3,13 +3,13 @@ const User = require('../model/user/userSchema');
 const router = express.Router();
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt");
-const { setJWT } = require('../../helpers/redis.helper');
+const { setJWT, deleteJWT } = require('../../helpers/redis.helper');
 const userAuthorisation = require('../../middleware/auth.middleware');
-const { getUserByEmail, updatePassword } = require('../model/user/userModel');
+const { getUserByEmail, updatePassword, emptyUserRefreshJWT } = require('../model/user/userModel');
 const { setPasswordResetPin, getPinbyEmailPin, deletePin } = require('../model/resetPin.js/ResetPin.model');
 const { emailProcessor } = require('../../helpers/email.helper');
 const hashPassword = require('../../helpers/bcrypt.helper');
-const {resetPassValid, updatePassValid} = require('../../middleware/formValidation.helper');
+const { resetPassValid, updatePassValid } = require('../../middleware/formValidation.helper');
 const saltRounds = 10
 
 
@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
     const accessToken = await jwt.sign({
         user: existUser._id
     }, process.env.jwt_access_token, {
-        expiresIn: "15m"
+        expiresIn: "1d"
     })
 
     await setJWT(accessToken, existUser._id)
@@ -98,7 +98,7 @@ router.post("/reset-password", resetPassValid, async (req, res) => {
     return res.json({ status: "error", message: "If the email exists in our database a reset pin will be sent to you shortly." })
 })
 
-router.patch("/reset-password", updatePassValid,  async (req, res) => {
+router.patch("/reset-password", updatePassValid, async (req, res) => {
     const { email, pin, newPassword } = req.body;
     const getPin = await getPinbyEmailPin(email, pin)
     if (getPin._id) {
@@ -121,6 +121,19 @@ router.patch("/reset-password", updatePassValid,  async (req, res) => {
             return res.json({ status: "success", updatedpass })
         }
     }
+})
+
+router.delete("/logout", userAuthorisation, async (req, res) => {
+    const { authorisation } = req.headers;
+    const _id = req.userId
+
+    deleteJWT(authorisation)
+    const data = await emptyUserRefreshJWT(_id, "")
+    if (data && data._id) {
+        return res.json({ status: "success", message: "logged out successfully" })
+    }
+
+    return res.json({status:"error", message:"unable to logout please try again later"})
 })
 
 module.exports = router

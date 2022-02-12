@@ -17,7 +17,7 @@ const getJWT = (key) => {
 
 const deleteJWT=(key)=>{
     try {
-        client.delete(key);
+        client.del(key);
     } catch (error) {
         console.error(error)
     }
