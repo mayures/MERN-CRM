@@ -1,10 +1,10 @@
 const express = require('express');
 const userAuthorisation = require('../../middleware/auth.middleware');
+const { createNewTicketValid, replyValid } = require('../../middleware/formValidation.helper');
 const { insertTicket, findTicketUser, findOneTicket, pushMessage, closeTicket, deleteTicket } = require('../model/ticket/ticket.model');
-const Ticket = require('../model/ticket/ticket.schema');
 const router = express.Router()
 
-router.post('/', userAuthorisation, async (req, res) => {
+router.post('/', userAuthorisation, createNewTicketValid, async (req, res) => {
 
     try {
         const { subject, sender, message } = req.body;
@@ -65,7 +65,7 @@ router.get("/:tId", userAuthorisation, async (req, res) => {
     }
 })
 
-router.put("/:tId", userAuthorisation, async (req, res) => {
+router.put("/:tId", userAuthorisation, replyValid, async (req, res) => {
     try {
         const { message, sender } = req.body
 
