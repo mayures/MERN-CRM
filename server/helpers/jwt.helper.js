@@ -9,4 +9,13 @@ const verifyRefreshToken = async (userJWT) => {
     }
 }
 
-module.exports = verifyRefreshToken
+const verifyAccessToken = async (userJWT) => {
+
+    try {
+        return Promise.resolve(jwt.verify(userJWT, process.env.jwt_access_token))
+    } catch (error) {
+        return Promise.resolve(error)
+    }
+}
+
+module.exports = {verifyRefreshToken, verifyAccessToken}

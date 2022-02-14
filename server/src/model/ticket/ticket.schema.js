@@ -24,9 +24,9 @@ const ticketSchema = new mongoose.Schema({
     conversations: [{
         sender: {
             type: String,
-            maxlength:50,
+            maxlength: 50,
             required: true,
-            default:""
+            default: ""
         },
         message: {
             type: String,
@@ -34,10 +34,10 @@ const ticketSchema = new mongoose.Schema({
             required: true,
             default: ""
         },
-        msgAt:{
-            type:Date,
-            require:true,
-            default:Date.now()
+        msgAt: {
+            type: Date,
+            require: true,
+            default: Date.now()
         }
     }]
 })
