@@ -1,21 +1,26 @@
-import React from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
-import logo from '../../assets/img/logo.png';
-import { LinkContainer } from 'react-router-bootstrap'
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Nav, Navbar } from "react-bootstrap";
+import logo from "../../assets/img/logo.png";
+import { LinkContainer } from "react-router-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { userlogOut } from "../../api/userApi";
 
 export const Header = () => {
   const navigate = useNavigate();
 
-  const logMeOut = () => {
-    navigate('/')
-  }
+  const logMeOut = async() => {
+    sessionStorage.removeItem("accessJWT");
+    await userlogOut();
+    navigate("/");
+  };
 
   return (
     <Navbar collapseOnSelect bg="info" variant="dark" expand="md">
-      <Navbar.Brand className='ms-3'>
-        <Link to="/dashboard"><img src={logo} alt="logo" width="50px" /></Link>
+      <Navbar.Brand className="ms-3">
+        <Link to="/dashboard">
+          <img src={logo} alt="logo" width="50px" />
+        </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">

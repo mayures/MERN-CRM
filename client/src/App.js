@@ -19,7 +19,6 @@ function App() {
                         <Route exact path="/add-ticket" element={<AddTicket/>}/>
                         <Route exact path="/tickets" element={<TicketListing/>}/>
                         <Route exact path="/ticket/:tid" element={<Ticket/>}/>
-                        <Route exact path="/dashboard" element={<Dashboard/>}/>
                     </Route>
                 </Routes>
             </Router> 
