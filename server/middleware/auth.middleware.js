@@ -1,10 +1,9 @@
 const { verifyAccessToken } = require("../helpers/jwt.helper");
 const { getJWT, deleteJWT } = require("../helpers/redis.helper");
-
+ 
 const userAuthorisation = async (req,res,next)=>{
     const { authorisation } = req.headers;
     const data = await verifyAccessToken(authorisation)
-    console.log(data)
 
     if (data.user) {
         const userId = await getJWT(authorisation);

@@ -10,8 +10,10 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const logMeOut = async() => {
+    userlogOut();
     sessionStorage.removeItem("accessJWT");
-    await userlogOut();
+    localStorage.removeItem("crmSite");
+    
     navigate("/");
   };
 

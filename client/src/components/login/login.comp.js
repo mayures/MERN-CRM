@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -19,12 +19,14 @@ export const LoginForm = ({ formSwitch }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //useSelector gives us all the states including tickets and login
-  //but access specifically login we can pass it into
   const { isLoading, isAuth, error } = useSelector((state) => state.login);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  useEffect(() => {
+    sessionStorage.getItem("accessJWT") && navigate("/dashboard");
+  }, [navigate, isAuth]);
+
+  const [email, setEmail] = useState("kumarmayuresh906@gmail.com");
+  const [password, setPassword] = useState("awesdrtf");
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;

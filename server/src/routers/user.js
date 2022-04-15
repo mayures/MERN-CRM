@@ -201,10 +201,12 @@ router.patch("/reset-password", updatePassValid, async (req, res) => {
 
 router.delete("/logout", userAuthorisation, async (req, res) => {
   const { authorisation } = req.headers;
+
   const _id = req.userId;
 
   deleteJWT(authorisation);
   const data = await emptyUserRefreshJWT(_id, "");
+  
   if (data && data._id) {
     return res.json({ status: "success", message: "logged out successfully" });
   }

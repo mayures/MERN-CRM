@@ -1,14 +1,15 @@
 const express = require("express");
-const verifyRefreshToken = require("../../helpers/jwt.helper");
+const {verifyRefreshToken} = require("../../helpers/jwt.helper");
 const { deleteJWT } = require("../../helpers/redis.helper");
 const User = require("../model/user/userSchema");
-const router = express.Router()
+const router = express.Router();
+const jwt = require("jsonwebtoken")
 
 
-router.get("/refresh-access-jwt", async (req, res) => {
+router.get("/", async (req, res) => {
     const { authorisation } = req.headers;
 
-    const id = await verifyRefreshToken(authorisation)
+    const id = await verifyRefreshToken(authorisation);
     if (id.user) {
 
         const userProf = await User.findOne({ "_id": id.user })

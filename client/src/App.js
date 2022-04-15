@@ -7,7 +7,7 @@ import { TicketListing } from './pages/TicketList/ticketListing.page';
 import { Ticket } from './pages/Ticket/Ticket.page';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
-
+ 
 function App() {
     return (
         <div className="app">
