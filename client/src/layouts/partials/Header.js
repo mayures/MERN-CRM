@@ -13,7 +13,6 @@ export const Header = () => {
     userlogOut();
     sessionStorage.removeItem("accessJWT");
     localStorage.removeItem("crmSite");
-    
     navigate("/");
   };
 

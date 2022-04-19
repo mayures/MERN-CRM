@@ -7,6 +7,7 @@ import { TicketListing } from './pages/TicketList/ticketListing.page';
 import { Ticket } from './pages/Ticket/Ticket.page';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
+import { Resgistration } from './pages/Registration/resgistration.page';
  
 function App() {
     return (
@@ -14,11 +15,12 @@ function App() {
             <Router>
                 <Routes>
                     <Route exact path="/" element={<Login />} />
+                    <Route exact path="/resgistration" element={<Resgistration />} />
                     <Route element={<PrivateRoute/>}>
                         <Route exact path="/dashboard" element={<Dashboard/>}/>
                         <Route exact path="/add-ticket" element={<AddTicket/>}/>
                         <Route exact path="/tickets" element={<TicketListing/>}/>
-                        <Route exact path="/ticket/:tid" element={<Ticket/>}/>
+                        <Route exact path="/ticket/:tId" element={<Ticket/>}/>
                     </Route>
                 </Routes>
             </Router> 

@@ -49,11 +49,10 @@ export const fetchUser = () => {
   });
 };
 
-export const fetchNewAccessJWT = async () => {
+export const fetchNewAccessJWT = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { refreshJWT } = JSON.parse(localStorage.getItem("accessJWT"));
-
+      const { refreshJWT } = JSON.parse(localStorage.getItem("crmSite"));
       if (!refreshJWT) {
         reject("token not found");
       }
@@ -72,7 +71,7 @@ export const fetchNewAccessJWT = async () => {
       if (error.message === "forbidden") {
         localStorage.removeItem("crmSite");
       }
-      reject(false);
+      reject(error);
     }
   });
 };

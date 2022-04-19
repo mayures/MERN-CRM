@@ -1,71 +1,81 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import { Breadcrumbcomp } from '../../components/Breadcrumb/Breadcrumb.comp';
-import tickets from '../../assets/data/dummy-data.json'
-import { Message } from '../../components/message-history/Message.comp';
-import { ReplyTicket } from '../../components/reply-ticket/ReplyTicket';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Breadcrumbcomp } from "../../components/Breadcrumb/Breadcrumb.comp";
+import { Message } from "../../components/message-history/Message.comp";
+import { ReplyTicket } from "../../components/reply-ticket/ReplyTicket";
+import { useParams } from "react-router-dom";
+import {
+  closeTicketAction,
+  fetchSingleTicket,
+} from "../TicketList/ticketsAction";
+import { resetResponseMsg } from "../TicketList/ticketSlice";
 
 export const Ticket = () => {
-    const {tid}=useParams();
-    const [message, setMessage] = useState('');
-    const [ticket, setTicket] = useState('');
-    useEffect(() => {
-        for(let i=0;i<tickets.length;i++){
-            if(tickets[i].id==tid){
-                setTicket(tickets[i])
-            }
-        }
-    }, [message]);
+  const { tId } = useParams();
 
+  const dispatch = useDispatch();
+  const { isLoading, error, selectedTicket, replyMsg, replyTicketError } =
+    useSelector((state) => state.tickets);
 
-    const handleOnChange = (e) => {
-        const { value } = e.target;
-        setMessage(value)
-    }
+  useEffect(() => {
+    dispatch(fetchSingleTicket(tId));
 
-    const handleOnSubmit = (e) => {
-        e.preventDefault();
+    return () => {
+      dispatch(resetResponseMsg());
+    };
+  }, [dispatch, tId]);
 
-        if (!message) {
-            return alert("fill the reply")
-        }
-
-        alert("reply submitted")
-    }
-
-    return (
-        <Container>
-            <Row>
-                <Col>
-                    <Breadcrumbcomp page="Ticket" />
-                </Col>
-            </Row>
-            <Row>
-                <Col className='fw-bold text-secondary'>
-                    <div className='subject'>Subject: {ticket.subject}</div>
-                    <div className='date'>Ticket opened at: {ticket.createdAt}</div>
-                    <div className='status'>Status: {ticket.status}</div>
-                </Col>
-                <Col className='text-end'>
-                    <Button variant="outline-info">Close Ticket</Button>
-                </Col>
-            </Row> 
-            <Row className='mt-4'>
-                <Col>
-                    {ticket.history && <Message msg={ticket.history} />}
-                </Col>
-            </Row>
-            <hr />
-            <Row className='mt-4'>
-                <Col>
-                    <ReplyTicket
-                        msg={message}
-                        handleOnChange={handleOnChange}
-                        handleOnSubmit={handleOnSubmit}
-                    />
-                </Col>
-            </Row>
-        </Container>
-    );
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <Breadcrumbcomp page="Ticket" />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {isLoading && <Spinner variant="info" aniamtion="border" />}
+          {error && <Alert variant="danger">{error}</Alert>}
+          {replyTicketError && (
+            <Alert variant="danger">{replyTicketError}</Alert>
+          )}
+          {replyMsg && <Alert variant="success">{replyMsg}</Alert>}
+        </Col>
+      </Row>
+      <Row>
+        <Col className="fw-bold text-secondary">
+          <div className="subject">Subject: {selectedTicket.subject}</div>
+          <div className="date">
+            Ticket opened at:{" "}
+            {selectedTicket.openAt &&
+              new Date(selectedTicket.openAt).toLocaleString()}
+          </div>
+          <div className="status">Status: {selectedTicket.status}</div>
+        </Col>
+        <Col className="text-end">
+          <Button
+            variant="outline-info"
+            onClick={() => dispatch(closeTicketAction(tId))}
+            disabled={selectedTicket.status === "ticket closed"}
+          >
+            Close Ticket
+          </Button>
+        </Col>
+      </Row>
+      <Row className="mt-4">
+        <Col>
+          {selectedTicket.conversations && (
+            <Message msg={selectedTicket.conversations} />
+          )}
+        </Col>
+      </Row>
+      <hr />
+      <Row className="mt-4">
+        <Col>
+          <ReplyTicket />
+        </Col>
+      </Row>
+    </Container>
+  );
 };

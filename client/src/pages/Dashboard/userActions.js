@@ -10,7 +10,7 @@ export const getuserProfile = () => async (dispatch) => {
     console.log(result);
 
     if (result.user && result.user._id)
-      return dispatch(getUserSuccess(result.user));
+      return dispatch(getUserSuccess(result.user)); 
 
     dispatch(getUserFail("User is not found"));
   } catch (error) {
