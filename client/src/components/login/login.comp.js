@@ -121,9 +121,21 @@ export const LoginForm = ({ formSwitch }) => {
             <hr />
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <a href="#" onClick={() => formSwitch("reset")}>
+        <Row className="text-center">
+          <Col className="text-info">
+            New?{" "}
+            <a href="/registration" className="text-decoration-none text-info">
+              Register here!
+            </a>
+          </Col>
+        </Row>
+        <Row className="text-center m-1">
+          <Col className="text-info ">
+            <a
+              href="#"
+              className="text-decoration-none text-info"
+              onClick={() => formSwitch("reset")}
+            >
               Forgot Password?
             </a>
           </Col>

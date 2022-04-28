@@ -15,7 +15,7 @@ function App() {
             <Router>
                 <Routes>
                     <Route exact path="/" element={<Login />} />
-                    <Route exact path="/resgistration" element={<Resgistration />} />
+                    <Route exact path="/registration" element={<Resgistration />} />
                     <Route element={<PrivateRoute/>}>
                         <Route exact path="/dashboard" element={<Dashboard/>}/>
                         <Route exact path="/add-ticket" element={<AddTicket/>}/>

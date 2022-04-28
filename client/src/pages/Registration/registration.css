@@ -1,0 +1,17 @@
+.jumbotron-reg {
+    box-shadow: 0px 0px 15px -5px;
+    padding: 40px;
+    margin: auto;
+    width: 30%;
+    background-color: white;
+    border-radius: 9px;
+    justify-content: space-evenly;
+} 
+
+.registration {
+    background-color: turquoise;
+    height: 130vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

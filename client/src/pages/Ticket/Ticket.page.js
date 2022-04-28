@@ -13,6 +13,7 @@ import { resetResponseMsg } from "../TicketList/ticketSlice";
 
 export const Ticket = () => {
   const { tId } = useParams();
+  // const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const { isLoading, error, selectedTicket, replyMsg, replyTicketError } =
@@ -25,6 +26,10 @@ export const Ticket = () => {
       dispatch(resetResponseMsg());
     };
   }, [dispatch, tId]);
+
+  // const handleonClose=()=>{
+  //   navigate("/tickets")
+  // }
 
   return (
     <Container>
@@ -56,6 +61,7 @@ export const Ticket = () => {
         <Col className="text-end">
           <Button
             variant="outline-info"
+            //onSubmit ={handleonClose}
             onClick={() => dispatch(closeTicketAction(tId))}
             disabled={selectedTicket.status === "ticket closed"}
           >

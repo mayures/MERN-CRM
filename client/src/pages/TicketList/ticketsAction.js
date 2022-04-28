@@ -76,7 +76,7 @@ export const replyTicket = (_id, msgObj) => async (dispatch) => {
 
 export const closeTicketAction = (_id) => async (dispatch) => {
   dispatch(closeTicketLoading());
-
+  
   try {
     const result = await closeTicketApi(_id);
 
@@ -84,7 +84,8 @@ export const closeTicketAction = (_id) => async (dispatch) => {
       return dispatch(closeTicketFail(result.message))
     }
     dispatch(fetchSingleTicket(_id));
-    dispatch(closeTicketSuccess(result.message))
+    dispatch(closeTicketSuccess(result.message));
+
   } catch (error) {
     dispatch(closeTicketFail(error));
   }
